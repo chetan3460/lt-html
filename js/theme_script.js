@@ -1,6 +1,7 @@
 $(document).ready(function () {
 
 
+
 	const windowOn = $(window);
 	let larger = 1600;
 	let xxl = 1400;
@@ -66,11 +67,13 @@ $(document).ready(function () {
 	var mySwiper2 = new Swiper('.swiper-upgrade', {
 		direction: 'horizontal', // or 'vertical'
 		loop: true,
-		speed: 1000,
+		speed: 10000,
+		allowTouchMove: true,
+
 		slidesPerView: 1.4,
 
 		autoplay: {
-			delay: 8000,
+			delay: 0,
 			disableOnInteraction: false,
 		},
 		spaceBetween: 20,
@@ -224,4 +227,3 @@ $(document).ready(function () {
 		});
 	}
 });
-
