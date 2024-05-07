@@ -53,31 +53,47 @@ $(document).ready(function () {
 
 
 
-	// Read More
-	$('div.expander').expander({
-		slicePoint: 550,
+	// // Read More
+	$('.expander').expander({
+		slicePoint: 500,
 		widow: 2,
 		expandSpeed: 0,
 		// userCollapseText: '[^]'
 	});
 
-	$('div.expander').expander();
+	$('.expander').expander();
+	// // Get all elements with the class 'link'
+	$('a.more-link').click(function (e) {
+		e.stopPropagation();
+		console.log("more link")
+	});
+	$('a.less-link').click(function (e) {
+		e.stopPropagation();
+		console.log("less link")
+	});
+
+	var links = document.querySelectorAll('.more-link');
+
+	// Update href attribute for each link
+	links.forEach(function (link) {
+		link.href = "javascript:void(0);";
+	});
+
 
 	// Upgrade slider
 	var mySwiper2 = new Swiper('.swiper-upgrade', {
 		direction: 'horizontal', // or 'vertical'
 		loop: true,
-		speed: 10000,
+		speed: 1000,
 		allowTouchMove: true,
-
 		slidesPerView: 1.4,
 
 		autoplay: {
-			delay: 0,
+			delay: 800,
 			disableOnInteraction: false,
 		},
 		spaceBetween: 20,
-		allowSlidePrev: false,
+		// allowSlidePrev: false,
 		breakpoints: {
 			1920: {
 				slidesPerView: 3.2,
@@ -132,19 +148,22 @@ $(document).ready(function () {
 	}
 
 
-	// Charchater Come long Animation
-	let homebd_banner__anim = gsap.timeline()
-	let bd_banner__anim = document.querySelector(".bd_banner__anim")
-	let split_bd_banner__anim = new SplitText(bd_banner__anim, {
-		type: "chars"
-	})
-	homebd_banner__anim.from(split_bd_banner__anim.chars, {
-		duration: 0.5,
-		x: 70,
-		autoAlpha: 0,
-		stagger: 0.08
-	});
+	/*======================================
+	30. Charchater Come Animation 
+	========================================*/
+	let char_come = document.querySelectorAll(".animation__char_come")
 
+	char_come.forEach((char_come) => {
+		let split_char = new SplitText(char_come, {
+			type: "chars, words,"
+		})
+		gsap.from(split_char.chars, {
+			duration: 1,
+			x: 70,
+			autoAlpha: 0,
+			stagger: 0.06
+		});
+	})
 	/*======================================
 	29. Title Animation
 	========================================*/
@@ -184,46 +203,53 @@ $(document).ready(function () {
 		});
 	}
 
-	// Paragraph Animation
-	if (device_width > 576) {
-		let textIntoView = $(".p-text");
-
-		gsap.utils.toArray(textIntoView).forEach(function (elem) {
-			const innerSplit = new SplitText(elem, {
-				type: "lines",
-				linesClass: "text-line"
-			});
-			const outerSplit = new SplitText(elem, {
-				type: "lines",
-				linesClass: "text-mask"
-			});
-
-			const splitTimeline = gsap.timeline({
-				scrollTrigger: {
-					trigger: elem,
-					scrub: false,
-					pin: false,
-					start: "top 90%",
-					end: "bottom 0%"
-				},
-				onComplete: () => {
-					outerSplit.revert(),
-						innerSplit.revert()
-				}
-			});
-
-			splitTimeline.to(innerSplit.lines, {
-				duration: 1.1,
-				autoAlpha: 1,
-				y: 0,
-				ease: "Power4.easeOut",
-				stagger: 0.20
-			})
-				.to(elem, {
-					duration: 0,
-					autoAlpha: 1
-				}, "<");
-
+	/*======================================
+	40. Fade in Left Animation
+	========================================*/
+	// Get Device width
+	if (device_width > sm) {
+		gsap.set(".bdFadeLeft", {
+			x: -80,
+			opacity: 0
 		});
+		const fadeArray = gsap.utils.toArray(".bdFadeLeft")
+		fadeArray.forEach((item, i) => {
+			let fadeTl = gsap.timeline({
+				scrollTrigger: {
+					trigger: item,
+					start: "top center+=200",
+				}
+			})
+			fadeTl.to(item, {
+				x: 0,
+				opacity: 1,
+				ease: "power2.out",
+				duration: 1,
+			})
+		})
+	}
+
+
+	// bdFadeUp
+	if (device_width > 576) {
+		gsap.set(".bdFadeUp", {
+			y: 30,
+			opacity: 0
+		});
+		const fadeUpArray = gsap.utils.toArray(".bdFadeUp")
+		fadeUpArray.forEach((item, i) => {
+			let fadeTl = gsap.timeline({
+				scrollTrigger: {
+					trigger: item,
+					start: "top bottom-=150",
+				}
+			})
+			fadeTl.to(item, {
+				y: 0,
+				opacity: 1,
+				ease: "power2.out",
+				duration: 1.3,
+			})
+		})
 	}
 });
